@@ -94,6 +94,23 @@ void Error_Handler(void);
 #define UART_ADDR_REGIST_SIZE  1
 #endif
 
+
+
+//MASTER CAN ID
+#define MASTER_CAN_ID 0
+
+/*************?��?��?�� RAM버퍼?�� ?��?�� ?��?��******************/
+
+#define CAN_Q_BUFF_SIZE 	512   //  ((?��?�� 4 Byte + ?��?��?�� 8 Byte) x 512(CAN_Q_BUFF_SIZE)) x 2(rx,tx) = 12,288 Byte
+// CAN 1개일 경우
+#define CAN_1	0 // ?��?���? ?��?��?�� define
+#define CAN_CNT 1
+
+void HAL_CAN_RxFifo0MsgPendingCallback1(CAN_HandleTypeDef *hcan);
+
+#include "dl_can.h"
+#include "net_phd_pid.h"
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

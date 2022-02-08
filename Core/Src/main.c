@@ -30,6 +30,11 @@
 #include "non_stop_delay_main.h"
 
 
+#include "app_pid_init_cmd.h"
+#include "app_pid_midi_cmd.h"
+#include "prtc_data_pid_midi.h"
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -74,9 +79,9 @@ static void MX_UART7_Init(void);
 void MAL_CAN1_Init(void)
 {
 	MAL_CAN_FilterConfig(&hcan1);
-	MAL_CAN_HandleMatching(&mcan1,&hcan1);
-	MAL_CAN_LEDInit(&mcan1.txLed, LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_RESET);
-	MAL_CAN_LEDInit(&mcan1.rxLed, LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_RESET);
+	//MAL_CAN_HandleMatching(&mcan1,&hcan1);
+	//MAL_CAN_LEDInit(&mcan1.txLed, LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_RESET);
+	//MAL_CAN_LEDInit(&mcan1.rxLed, LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_RESET);
 }
 void MAL_CAN2_Init(void)
 {
@@ -133,6 +138,8 @@ int main(void)
   MAL_CAN1_Init();
   MAL_CAN2_Init();
 
+  can_init_data_save(&hcan1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -142,6 +149,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  proc_can_rx();
+	  proc_can_tx();
 	  MAL_CAN_Process();
 	  UART_COM_Process();
 	  if(MAL_NonStopDelay(&t_delay, 500))

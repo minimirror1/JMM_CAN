@@ -56,6 +56,11 @@
 			<locationURI>PARENT-4-PROJECT_LOC/driver/UART_Parsing</locationURI>
 		</link>
 		<link>
+			<name>Control_Driver/gm_motion_CANprotocol</name>
+			<type>2</type>
+			<locationURI>PARENT-4-PROJECT_LOC/driver/gm_motion_CANprotocol</locationURI>
+		</link>
+		<link>
 			<name>Control_Driver/non_stop_delay</name>
 			<type>2</type>
 			<locationURI>PARENT-4-PROJECT_LOC/driver/non_stop_delay</locationURI>
