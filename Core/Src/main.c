@@ -34,6 +34,10 @@
 #include "app_pid_midi_cmd.h"
 #include "prtc_data_pid_midi.h"
 
+#include "can2_com_manager.h"
+#include "filter_manager.h"
+
+
 
 /* USER CODE END Includes */
 
@@ -61,6 +65,8 @@ UART_HandleTypeDef huart7;
 uint8_t my_can_id;
 MAL_CAN_HandleTypeDef mcan1;
 MAL_CAN_HandleTypeDef mcan2;
+
+extern MotionData_TypeDef motion;
 
 /* USER CODE END PV */
 
@@ -99,6 +105,11 @@ void MAL_UART_7_Init(void)
 
 	MAL_UART_LEDInit(&muart7.txLed, LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_RESET);
 	MAL_UART_LEDInit(&muart7.rxLed, LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_RESET);
+}
+
+void filter_Init(void)
+{
+	filter_data_reg(&motion);
 }
 /* USER CODE END 0 */
 
@@ -139,7 +150,7 @@ int main(void)
   MAL_CAN2_Init();
 
   can_init_data_save(&hcan1);
-
+  filter_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -153,6 +164,8 @@ int main(void)
 	  proc_can_tx();
 	  MAL_CAN_Process();
 	  UART_COM_Process();
+	  filter_manager();
+	  newDataProcess();
 	  if(MAL_NonStopDelay(&t_delay, 500))
 	  {
 		  HAL_GPIO_TogglePin(LED_RUN_GPIO_Port, LED_RUN_Pin);
