@@ -10,7 +10,7 @@
 
 #include "can2_com_manager.h"
 
-#define FILTER_NUM	10
+#define FILTER_NUM	SLIDE_CNT
 
 
 

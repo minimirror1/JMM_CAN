@@ -73,6 +73,8 @@ void Error_Handler(void);
 
 #define FW_VER_STR "0.0.1v"	//최초?��?��
 
+#define SLIDE_CNT	20
+
 #define BOARD_TYPE	2//JMM
 
 #define CAN1_ENABLE

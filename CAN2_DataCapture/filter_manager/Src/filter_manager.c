@@ -217,7 +217,7 @@ void filter_manager(void)
 
 	if (MAL_NonStopDelay(&t_filter, 20) == 1)
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < FILTER_NUM; i++)
 		{
 			filter_calc(i,
 					&filter[i].SmoothData,

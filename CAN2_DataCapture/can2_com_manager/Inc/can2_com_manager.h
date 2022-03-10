@@ -20,8 +20,8 @@ typedef struct{
 }ControlData_TypeDef;
 
 typedef struct{
-	UART_JMM_LCD_SettingData_TypeDef setting[10];
-	ControlData_TypeDef data[10];
+	UART_JMM_LCD_SettingData_TypeDef setting[SLIDE_CNT];
+	ControlData_TypeDef data[SLIDE_CNT];
 }MotionData_TypeDef;
 #pragma pack()
 

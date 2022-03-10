@@ -27,34 +27,41 @@ uint8_t rxGid;
 uint8_t rxSid;
 uint16_t rxPosi;
 
+uint8_t monitor = 0;
+
 void newDataProcess(void)
 {
-
 	UART_JMM_LCD_MotionOut_Data_TypeDef newData = {0,};
-	for(int i = 0; i < 10; i++)
+	for(int i = 0; i < SLIDE_CNT; i++)
 	{
-		if(motion.data[i].oldData != motion.data[i].filterData)
-		{
+		if (motion.data[i].oldData != motion.data[i].filterData) {
 			motion.data[i].oldData = motion.data[i].filterData;
 
-			 app_tx_midi_sub_pid_adc_ctl(0, 0, my_can_id, MASTER_CAN_ID, 0, 0,
-					 motion.setting[i].gid,
-					 motion.setting[i].sid,
-					 motion.data[i].filterData);
+			if((motion.setting[i].gid == 0)||(motion.setting[i].gid == 0))
+			{
+				return;
+			}
 
-			 newData.gid = motion.setting[i].gid;
-			 newData.sid = motion.setting[i].sid;
-			 newData.posi = motion.data[i].filterData;
+			monitor = motion.setting[i].slideid;
 
-			 UART_App_JMM_LCD_MotionOut_Data_TxReq(&newData);
+			app_tx_midi_sub_pid_adc_ctl(0, 0, my_can_id, MASTER_CAN_ID, 0, 0,
+					motion.setting[i].gid, motion.setting[i].sid,
+					motion.data[i].filterData);
+
+			newData.gid = motion.setting[i].gid;
+			newData.sid = motion.setting[i].sid;
+			newData.posi = motion.data[i].filterData;
+
+			UART_App_JMM_LCD_MotionOut_Data_TxReq(&newData);
 		}
 	}
 }
 
+#if 0
 uint8_t findIDtoIndex(uint8_t gid, uint8_t sid)
 {
 	int i = 0;
-	for( i = 0; i < 10; i++)
+	for( i = 0; i < SLIDE_CNT; i++)
 	{
 		if((motion.setting[i].gid == gid)&&(motion.setting[i].sid == sid))
 		{
@@ -63,6 +70,21 @@ uint8_t findIDtoIndex(uint8_t gid, uint8_t sid)
 	}
 	return i;
 }
+#endif
+
+uint8_t findIDtoIndex(uint8_t id)
+{
+	int i = 0;
+	for( i = 0; i < SLIDE_CNT; i++)
+	{
+		if(motion.setting[i].slideid == id)
+		{
+			return i;
+		}
+	}
+	return i;
+}
+
 
 void CAN_App_JMS_POSI_DATA_RxReq(uint8_t canid, uint16_t posi)
 {
@@ -70,11 +92,10 @@ void CAN_App_JMS_POSI_DATA_RxReq(uint8_t canid, uint16_t posi)
 	rxSid = canid&0x0F;
 	rxPosi = posi;
 	uint8_t index = 0;
-	if( (index = findIDtoIndex(rxGid, rxSid)) != 10)
+	//if( (index = findIDtoIndex(rxGid, rxSid)) != SLIDE_CNT)
+	if( (index = findIDtoIndex(canid)) != SLIDE_CNT)
 	{
 		motion.data[index].rawData = rxPosi;
-
-
 	}
 }
 
