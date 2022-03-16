@@ -17,6 +17,7 @@ typedef struct{
 	int rawData;
 	int filterData;
 	int oldData;
+	uint8_t f_first;
 }ControlData_TypeDef;
 
 typedef struct{

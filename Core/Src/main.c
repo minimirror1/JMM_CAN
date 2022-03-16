@@ -67,7 +67,6 @@ MAL_CAN_HandleTypeDef mcan1;
 MAL_CAN_HandleTypeDef mcan2;
 
 extern MotionData_TypeDef motion;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -151,6 +150,10 @@ int main(void)
 
   can_init_data_save(&hcan1);
   filter_Init();
+
+  //부팅시 버튼활성화
+  app_tx_edit_sub_pid_action_ctl(0, 0, my_can_id, MASTER_CAN_ID, 0, 0,
+			EDIT_ACTION_KEY_POSITION_START);
   /* USER CODE END 2 */
 
   /* Infinite loop */

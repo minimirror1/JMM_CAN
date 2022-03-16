@@ -37,6 +37,7 @@ typedef struct{
 }filter_TypeDef;
 #endif
 
+void filter_calc(int i, float *SmoothData, int *filterData, int RawData, float LPF_Beta);
 void filter_data_reg(MotionData_TypeDef* pMotion);
 void filter_manager(void);
 void filter_init(void);
